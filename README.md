@@ -13,7 +13,7 @@
 ### How to Use?
 #### Method 1: Search
 1. Open http://localhost:3000 while the app is running.
-2. Enter the username in the field and tap on search
+2. Enter the username in the field and tap on search (or press Enter ↵)
 #### Method 2: Directly via URL Parameters
 1. Simply open http://localhost:3000/<user_name> while the app is running.
 
