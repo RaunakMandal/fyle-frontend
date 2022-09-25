@@ -178,6 +178,7 @@ h4 {
     max-width: 100vw;
   }
   .search-container {
+    margin-top: 0;
     justify-content: center;
   }
   .search-container > input {
@@ -226,7 +227,6 @@ h4 {
     text-align: center;
   }
   .loader {
-    margin-top: 40vh;
     text-align: center;
   }
 }
