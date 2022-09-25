@@ -19,7 +19,7 @@ const CardComponent = (props) => {
     <div className="card-component" key={repo.id}>
       <div className="card-component__body">
         <p className="repo-name">{repo.name}</p>
-        <p className="repo-desc">{repo.description}</p>
+        <p className="repo-desc">{repo.description.substring(0, 120)}...</p>
         <div className="repo-languages">
           {loaded ? (
             <>
