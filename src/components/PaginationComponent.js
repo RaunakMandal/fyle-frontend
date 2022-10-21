@@ -2,20 +2,16 @@ import React, { useEffect, useState } from "react";
 import ReposComponent from "./ReposComponent";
 
 const PaginationComponent = (props) => {
-  const { username } = props;
+  const { username, repo_count } = props;
   const [pages, setPages] = useState({
-    page: 0,
-    total_pages: 0,
+    page: 1,
+    total_pages: 1,
   });
   useEffect(() => {
-    const fetchRepos = async () => {
-      const response = await fetch(
-        `https://api.github.com/users/${username}/repos`
-      );
-      const data = await response.json();
-      setPages({ page: 1, total_pages: Math.ceil(data.length / 6) });
-    };
-    fetchRepos();
+    setPages((prev) => ({
+      ...prev,
+      total_pages: Math.ceil(repo_count / 6), // 6 repos per page
+    }));
   }, []);
   const makeButtons = () => {
     let buttons = [];

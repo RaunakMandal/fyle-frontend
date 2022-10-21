@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ColorRing, Watch } from "react-loader-spinner";
+import { Watch } from "react-loader-spinner";
 import CardComponent from "./CardComponent";
 
 const ReposComponent = (props) => {
@@ -13,14 +13,14 @@ const ReposComponent = (props) => {
       );
       const data = await response.json();
       setRepos(data);
-      setLoading(true);
+      setLoading(false);
     };
     loadPage(page);
   }, [page]);
 
   return (
     <>
-      {!loading ? (
+      {loading ? (
         <div className="loader">
           <Watch height="120" width="120" color="#4a90cf" visible={loading} />
           <h4>Please wait while the data is loading...</h4>

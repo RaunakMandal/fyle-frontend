@@ -32,7 +32,10 @@ const UserDetailsComponent = (props) => {
           {userDetails.github}
         </a>
       </p>
-      <PaginationComponent username={userDetails.login} />
+      <PaginationComponent
+        username={userDetails.login}
+        repo_count={userDetails.repo_count}
+      />
     </div>
   );
 };

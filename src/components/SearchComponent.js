@@ -17,6 +17,7 @@ const SearchComponent = () => {
     github: "",
     avatar_url: "",
     loaded: false,
+    repo_count: 0,
   });
 
   const fetchUser = async (e) => {
@@ -31,6 +32,7 @@ const SearchComponent = () => {
       github: data.html_url,
       avatar_url: data.avatar_url,
       loaded: true,
+      repo_count: data.public_repos,
     });
   };
 
