@@ -7,7 +7,11 @@ const CardComponent = (props) => {
   const [loaded, setLoaded] = useState(false);
   useEffect(() => {
     const fetchLanguages = async (languages_url) => {
-      const response = await fetch(languages_url);
+      const response = await fetch(languages_url, {
+        headers: {
+          Authorization: `token ${process.env.REACT_APP_GITHUB_TOKEN}`,
+        }
+      });
       const data = await response.json();
       // console.log(Object.keys(data));
       setLanguages(Object.keys(data));

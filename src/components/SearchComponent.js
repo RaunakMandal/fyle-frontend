@@ -16,29 +16,44 @@ const SearchComponent = () => {
     twitter: "",
     github: "",
     avatar_url: "",
-    loaded: false,
     repo_count: 0,
   });
+  const [loading, setLoading] = useState(false);
 
-  const fetchUser = async (e) => {
-    const response = await fetch(`https://api.github.com/users/${username}`);
-    const data = await response.json();
-    setUserDetails({
-      login: data.login,
-      name: data.name,
-      bio: data.bio || "No bio available",
-      location: data.location || "No location available",
-      twitter: data.twitter_username || "unavailable",
-      github: data.html_url,
-      avatar_url: data.avatar_url,
-      loaded: true,
-      repo_count: data.public_repos,
-    });
+  const fetchUser = async () => {
+    setLoading(true);
+    await fetch(`https://api.github.com/users/${username}`, {
+      headers: {
+        Authorization: `token ${process.env.REACT_APP_GITHUB_TOKEN}`,
+      },
+    })
+      .then((response) => {
+        if (response.status !== 200) {
+          throw new Error("User not found");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setUserDetails({
+          login: data.login,
+          name: data.name,
+          bio: data.bio || "No bio available",
+          location: data.location || "No location available",
+          twitter: data.twitter_username || "unavailable",
+          github: data.html_url,
+          avatar_url: data.avatar_url,
+          repo_count: data.public_repos,
+        });
+      })
+      .catch((error) => {})
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   return (
     <>
-      {userDetails.loaded ? (
+      {!loading ? (
         <>
           {userDetails.login ? (
             <UserDetailsComponent userDetails={userDetails} />

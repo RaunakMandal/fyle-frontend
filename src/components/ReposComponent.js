@@ -6,14 +6,42 @@ const ReposComponent = (props) => {
   const { page, username } = props;
   const [repos, setRepos] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState({
+    status: false,
+    message: "",
+  });
   useEffect(() => {
     const loadPage = async (page_no) => {
-      const response = await fetch(
-        `https://api.github.com/users/${username}/repos?per_page=6&page=${page_no}`
-      );
-      const data = await response.json();
-      setRepos(data);
-      setLoading(false);
+      await fetch(
+        `https://api.github.com/users/${username}/repos?per_page=6&page=${page_no}`,
+        {
+          headers: {
+            Authorization: `token ${process.env.REACT_APP_GITHUB_TOKEN}`,
+          },
+        }
+      )
+        .then((response) => {
+          if (response.status !== 200) {
+            throw new Error("Failed to fetch data");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          setRepos(data);
+          setError({
+            status: false,
+            message: "",
+          });
+        })
+        .catch((error) => {
+          setError({
+            status: true,
+            message: error.message,
+          });
+        })
+        .finally(() => {
+          setLoading(false);
+        });
     };
     loadPage(page);
   }, [page]);
@@ -26,11 +54,20 @@ const ReposComponent = (props) => {
           <h4>Please wait while the data is loading...</h4>
         </div>
       ) : (
-        <div className="repo-container">
-          {repos.map((repo) => (
-            <CardComponent repo={repo} key={repo.id} />
-          ))}
-        </div>
+        <>
+          {error.status ? (
+            <div className="loader">
+              <h2>Error: {error.message}</h2>
+            </div>
+          ) : (
+            <div className="repo-container">
+              {repos &&
+                repos.map((repo) => (
+                  <CardComponent repo={repo} key={repo.id} />
+                ))}
+            </div>
+          )}
+        </>
       )}
     </>
   );
